@@ -5,12 +5,12 @@
          version="4.0">
 
     <servlet>
-        <servlet-name>add</servlet-name>
+        <servlet-name>firstServlet</servlet-name>
         <servlet-class>com.leverx.servlets.AddServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>add</servlet-name>
+        <servlet-name>firstServlet</servlet-name>
         <url-pattern>/add</url-pattern>
     </servlet-mapping>
 

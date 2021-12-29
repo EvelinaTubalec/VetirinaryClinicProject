@@ -4,11 +4,13 @@ import java.util.List;
 
 public interface CrudOperations<T> {
 
+    T findById(Long id);
+
     List<T> findAll();
 
-    T create(T entity);
+    void create(T entity);
 
-    T update(T entity);
+    void update(T entity);
 
-    void delete(Long d);
+    void delete(Long id);
 }
