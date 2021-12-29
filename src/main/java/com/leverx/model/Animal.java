@@ -26,7 +26,7 @@ public class Animal {
     private String name;
 
     @Column
-    private String age;
+    private Integer age;
 
     @OneToMany(mappedBy="animal", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Note> notes;
@@ -35,6 +35,11 @@ public class Animal {
     @ManyToOne
     @JoinColumn(name="owner_id", nullable=false)
     private Owner owner;
+
+    public Animal(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+    }
 
     @Override
     public String toString() {
