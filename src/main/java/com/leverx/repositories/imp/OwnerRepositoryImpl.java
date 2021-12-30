@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import java.util.List;
 
 public class OwnerRepositoryImpl implements OwnerRepository {
+
     @Override
     public Owner findById(Long id) {
         Session session = HibernateUtil.getSessionFactory().openSession();

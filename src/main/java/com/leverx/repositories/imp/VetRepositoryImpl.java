@@ -6,9 +6,11 @@ import com.leverx.utills.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.persistence.Query;
 import java.util.List;
 
 public class VetRepositoryImpl implements VetRepository {
+
     @Override
     public Vet findById(Long id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -51,5 +53,16 @@ public class VetRepositoryImpl implements VetRepository {
         session.delete(byId);
         transaction.commit();
         session.close();
+    }
+
+    @Override
+    public Vet findByLogin(String login) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createQuery("from Vet where login = :login");
+        query.setParameter("login", login);
+        List<Vet> vets = query.getResultList();
+        Vet vet = vets.stream().findFirst().get();
+        session.close();
+        return vet;
     }
 }

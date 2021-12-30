@@ -36,4 +36,9 @@ public class VetService {
         log.debug("Find notes");
         return vetRepository.findAll();
     }
+
+    public Vet findVetByLogin(String login) {
+        log.debug("Find vet by login " + login);
+        return vetRepository.findByLogin(login);
+    }
 }
