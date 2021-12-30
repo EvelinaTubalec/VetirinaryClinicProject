@@ -20,9 +20,9 @@ public class NoteRepositoryImpl implements NoteRepository {
     @Override
     public List<Note> findAll() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Note> allNotes = session.createQuery("from Note").getResultList();
+        List<Note> notes = session.createQuery("from Note").getResultList();
         session.close();
-        return allNotes;
+        return notes;
     }
 
     @Override

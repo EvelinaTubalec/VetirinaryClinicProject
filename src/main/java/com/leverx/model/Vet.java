@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -18,15 +16,21 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"notes"})
 public class Vet {
 
-    public Vet(String firstName, String lastName, String position) {
+    public Vet(String firstName, String lastName, String login, String password, String position, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.login = login;
+        this.password = password;
         this.position = position;
+        this.role = role;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
+    private Role role;
 
     @Column
     private String firstName;
@@ -35,13 +39,14 @@ public class Vet {
     private String lastName;
 
     @Column
+    private String login;
+
+    @Column
+    private String password;
+
+    @Column
     private String position;
 
     @OneToMany(mappedBy = "vet", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Note> notes;
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
-    }
 }

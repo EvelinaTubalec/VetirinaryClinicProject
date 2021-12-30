@@ -21,9 +21,9 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public List<Animal> findAll() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Animal> allAnimals = session.createQuery("from Animal").getResultList();
+        List<Animal> animals = session.createQuery("from Animal").getResultList();
         session.close();
-        return allAnimals;
+        return animals;
     }
 
     @Override
@@ -48,8 +48,8 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     public void delete(Long id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        Animal byId = findById(id);
-        session.delete(byId);
+        Animal animalById = findById(id);
+        session.delete(animalById);
         transaction.commit();
         session.close();
     }

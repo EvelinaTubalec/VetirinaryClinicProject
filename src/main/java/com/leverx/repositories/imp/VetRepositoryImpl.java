@@ -20,9 +20,9 @@ public class VetRepositoryImpl implements VetRepository {
     @Override
     public List<Vet> findAll() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Vet> allVets = session.createQuery("from Vet").getResultList();
+        List<Vet> vets = session.createQuery("from Vet").getResultList();
         session.close();
-        return allVets;
+        return vets;
     }
 
     @Override

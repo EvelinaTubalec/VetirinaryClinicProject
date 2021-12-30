@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -18,14 +16,18 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"animals"})
 public class Owner {
 
-    public Owner(String firstname, String lastName) {
+    public Owner(String firstname, String lastName, Role role) {
         this.firstname = firstname;
         this.lastName = lastName;
+        this.role = role;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
+    private Role role;
 
     @Column
     private String firstname;
@@ -35,9 +37,4 @@ public class Owner {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Animal> animals;
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
-    }
 }

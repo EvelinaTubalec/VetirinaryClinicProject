@@ -20,9 +20,9 @@ public class OwnerRepositoryImpl implements OwnerRepository {
     @Override
     public List<Owner> findAll() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Owner> allOwners = session.createQuery("from Owner").getResultList();
+        List<Owner> owners = session.createQuery("from Owner").getResultList();
         session.close();
-        return allOwners;
+        return owners;
     }
 
     @Override
