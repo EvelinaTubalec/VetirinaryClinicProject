@@ -26,13 +26,19 @@ public class AnimalServlet extends HttpServlet {
     private final OwnerService ownerService = new OwnerService();
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Animal> animals = animalService.findAllAnimals();
-        for (Animal animal : animals) {
-            PrintWriter writer = resp.getWriter();
-            writer.println(animal);
-        }
-    }
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+        animalService.findAllAnimals()
+                .forEach(animal -> {
+                    PrintWriter writer = null;
+                    try {
+                        writer = resp.getWriter();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    writer.println(animal);
+                });
+        resp.setStatus(200);
+}
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -46,8 +52,7 @@ public class AnimalServlet extends HttpServlet {
         Owner owner = ownerService.findOwner(ownerId);
         Animal animal = new Animal(name, age, owner);
         animalService.saveAnimal(animal);
-        PrintWriter writer = resp.getWriter();
-        writer.print("The animal was created!");
+        resp.setStatus(201);
     }
 
     @Override
@@ -60,16 +65,14 @@ public class AnimalServlet extends HttpServlet {
         Integer age = Integer.parseInt(stringAge);
         animal.setAge(age);
         animalService.updateAnimal(animal);
-        PrintWriter writer = resp.getWriter();
-        writer.print("The animal was updated!");
+        resp.setStatus(200);
     }
 
     @Override
     public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter(ID);
-        PrintWriter writer = resp.getWriter();
         Long animalId = Long.parseLong(id);
         animalService.deleteAnimal(animalId);
-        writer.print("The animal was removed!");
+        resp.setStatus(200);
     }
 }

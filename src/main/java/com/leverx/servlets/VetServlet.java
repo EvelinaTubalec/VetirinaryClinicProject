@@ -27,11 +27,17 @@ public class VetServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        List<Vet> vets = vetService.findAllVets();
-        for (Vet vet : vets) {
-            PrintWriter writer = resp.getWriter();
-            writer.println(vet);
-        }
+        vetService.findAllVets().
+                forEach(vet ->{
+                    PrintWriter writer = null;
+                    try {
+                        writer = resp.getWriter();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    writer.println(vet);
+                });
+        resp.setStatus(200);
     }
 
     @Override
@@ -43,8 +49,7 @@ public class VetServlet extends HttpServlet {
         String position = req.getParameter(POSITION);
         Vet vet = new Vet(firstName, lastName, login, password, position, Role.VET);
         vetService.saveVet(vet);
-        PrintWriter writer = resp.getWriter();
-        writer.print("The vet was created!");
+        resp.setStatus(201);
     }
 
     @Override
@@ -55,16 +60,14 @@ public class VetServlet extends HttpServlet {
         vet.setLastName(req.getParameter(LAST_NAME));
         vet.setPosition(req.getParameter(POSITION));
         vetService.updateVet(vet);
-        PrintWriter writer = resp.getWriter();
-        writer.print("The vet was updated!");
+        resp.setStatus(200);
     }
 
     @Override
     public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter(VET_ID);
-        PrintWriter writer = resp.getWriter();
         Long vetId = Long.parseLong(id);
         vetService.deleteVet(vetId);
-        writer.print("The vet was removed!");
+        resp.setStatus(200);
     }
 }

@@ -25,11 +25,17 @@ public class OwnerServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        List<Owner> owners = ownerService.findOwners();
-        for (Owner owner : owners) {
-            PrintWriter writer = resp.getWriter();
-            writer.println(owner);
-        }
+        ownerService.findOwners().
+                forEach(owner ->{
+                    PrintWriter writer = null;
+                    try {
+                        writer = resp.getWriter();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    writer.println(owner);
+                });
+        resp.setStatus(200);
     }
 
     @Override
@@ -39,8 +45,7 @@ public class OwnerServlet extends HttpServlet {
 
         Owner owner = new Owner(firstName, lastName, Role.OWNER);
         ownerService.saveOwner(owner);
-        PrintWriter writer = resp.getWriter();
-        writer.print("The owner was created!");
+        resp.setStatus(201);
     }
 
     @Override
@@ -50,16 +55,14 @@ public class OwnerServlet extends HttpServlet {
         owner.setFirstname(req.getParameter(FIRST_NAME));
         owner.setLastName(req.getParameter(LAST_NAME));
         ownerService.updateOwner(owner);
-        PrintWriter writer = resp.getWriter();
-        writer.print("The owner was updated!");
+        resp.setStatus(200);
     }
 
     @Override
     public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter(OWNER_ID);
-        PrintWriter writer = resp.getWriter();
         Long ownerId = Long.parseLong(id);
         ownerService.deleteOwner(ownerId);
-        writer.print("The owner was removed!");
+        resp.setStatus(200);
     }
 }

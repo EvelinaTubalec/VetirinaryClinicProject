@@ -34,11 +34,17 @@ public class NoteServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Note> notes = noteService.findAllNotes();
-        for (Note note : notes) {
-            PrintWriter writer = resp.getWriter();
-            writer.println(note);
-        }
+        noteService.findAllNotes().
+                forEach(note ->{
+                    PrintWriter writer = null;
+                    try {
+                        writer = resp.getWriter();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    writer.println(note);
+                });
+        resp.setStatus(200);
     }
 
     @Override
@@ -58,8 +64,7 @@ public class NoteServlet extends HttpServlet {
         Animal animal = animalService.findAnimal(animalId);
         Note note = new Note(text, date, animal, vet);
         noteService.saveNote(note);
-        PrintWriter writer = resp.getWriter();
-        writer.print("The note was created!");
+        resp.setStatus(201);
     }
 
     @Override
@@ -75,16 +80,14 @@ public class NoteServlet extends HttpServlet {
         note.setText(text);
         note.setDate(date);
         noteService.updateNote(note);
-        PrintWriter writer = resp.getWriter();
-        writer.print("The note was updated!");
+        resp.setStatus(200);
     }
 
     @Override
     public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter(NOTE_ID);
-        PrintWriter writer = resp.getWriter();
         Long noteId = Long.parseLong(id);
         animalService.deleteAnimal(noteId);
-        writer.print("The note was removed!");
+        resp.setStatus(200);
     }
 }
